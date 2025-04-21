@@ -10,3 +10,5 @@ service:
   port: 80
 
 resources: {}
+
+volumes: {}
