@@ -6,12 +6,12 @@ Generate the name of the application
 {{- end }}
 
 {{/*
-Create a fullname using the release name
+Create a clean fullname without release prefix
 */}}
 {{- define "points.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- printf "%s-%s" .Release.Name (include "points.name" .) | trunc 63 | trimSuffix "-" }}
+{{- include "points.name" . | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}

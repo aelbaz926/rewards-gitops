@@ -6,12 +6,12 @@ Generate the name of the application
 {{- end }}
 
 {{/*
-Create a fullname using the release name
+Create a clean fullname without release prefix
 */}}
 {{- define "badges.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- printf "%s-%s" .Release.Name (include "badges.name" .) | trunc 63 | trimSuffix "-" }}
+{{- include "badges.name" . | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
