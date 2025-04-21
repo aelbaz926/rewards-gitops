@@ -1,0 +1,5 @@
+apiVersion: v2
+name: points
+description: A Helm chart for Kubernetes microservice "points"
+version: 0.1.0
+appVersion: "1.0"
