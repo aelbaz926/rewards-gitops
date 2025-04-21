@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: badges-appset
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - list:
+        elements:
+          - name: badges
+            environment: prod
+  template:
+    metadata:
+      name: "{{.name}}-{{.environment}}"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://github.com/aelbaz926/rewards-gitops.git
+          targetRevision: HEAD
+          path: helm-charts/{{.name}} 
+          helm:
+            valueFiles:
+              - $values/environment-files/{{.environment}}/{{.name}}-values.yaml
+        - repoURL: https://github.com/aelbaz926/rewards-gitops.git
+          targetRevision: HEAD
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.environment}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
