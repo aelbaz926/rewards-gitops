@@ -1,0 +1,115 @@
+current_structure:
+  root:
+    environments:
+      dev:
+        - microservice-1-values.yaml
+        - microservice-2-values.yaml
+        - microservice-3-values.yaml
+        - microservice-4-values.yaml
+      qa:
+        - microservice-1-values.yaml
+        - microservice-2-values.yaml
+        - microservice-3-values.yaml
+        - microservice-4-values.yaml
+    helm_charts:
+      - microservice-1-helm-chart
+      - microservice-2-helm-chart
+      - microservice-3-helm-chart
+      - microservice-4-helm-chart
+    clusters:
+      non-prod:
+        - microservice-1-app-set.yaml (dev, qa, staging)
+        - microservice-2-app-set.yaml (dev, qa, staging)
+        - microservice-3-app-set.yaml (dev, qa, staging)
+        - microservice-4-app-set.yaml (dev, qa, staging)
+      prod:
+        - microservice-1-app-set.yaml (prod)
+        - microservice-2-app-set.yaml (prod)
+        - microservice-3-app-set.yaml (prod)
+        - microservice-4-app-set.yaml (prod)
+    
+    - app-of-apps-non-prod.yaml
+    - app-of-apps-prod.yaml
+
+proposed_structure:
+  root:
+    environments:
+      dev:
+        - {microservice_name}-{optional_market/country}-values.yaml #automation script to split and find
+        - login-country1-values.yaml
+        - login-country2-values.yaml
+        - gamification-country2-values.yaml
+        - gamification-country2-values.yaml
+        - microservice3-values.yaml
+      dev_option_2:
+        multi_market_svcs:
+          - gamification-country2-values.yaml
+          - gamification-country2-values.yaml
+          - login-country1-values.yaml
+          - login-country2-values.yaml     
+        - microservice3-values.yaml # services which do not roll out to multi-market stay in root
+      qa:
+        - login-country1-values.yaml
+        - login-country2-values.yaml
+        - gamification-country2-values.yaml
+        - gamification-country2-values.yaml
+        - microservice3-values.yaml
+    helm_charts:
+      - shared-helm-chart
+    clusters:
+      non-prod:
+        - login-country1-app-set.yaml (dev, qa, staging)
+        - login-country2-app-set.yaml (dev, qa, staging)
+        - gamification-country1-app-set.yaml (dev, qa, staging)
+        - gamification-country2-app-set.yaml (dev, qa, staging)
+        - microservice-3-app-set.yaml (dev, qa, staging)
+      prod:
+        - microservice-1-app-set.yaml (prod)
+        - microservice-2-app-set.yaml (prod)
+        - microservice-3-app-set.yaml (prod)
+    app-of-apps-non-prod.yaml
+    app-of-apps-prod.yaml
+
+
+
+# New things which we have not thought about
+- same microservice - multiple markets (Login and Gamification)
+
+Image Updater GH Actions:
+  - Updates Docker image tags in a GH Repo
+  - Only able to update 1 environment at a time
+    - Should be able to update 1 or more values files in bulk
+      - Gamification updates (tr, de, ro, pt)
+        -  from image version 1.1.0 to 1.2.0 ONLY in tr, de
+
+  - Should be flexible to be able to change destination branch name
+
+
+- Rewards want to update login for (tr, de) and gamification for (tr, ro, pt) and microservice3, 4, 5
+
+dev:
+  - image updater will use this env name and push/PR into destination branch of that name
+    - updater also allows optional prefix or suffix as an argument for the branch names with environment
+    - if prefix or suffix is passed then uses them in addition to the env name to push to branch
+
+
+# Need to support below heirarchy (batch updater)
+#&nbsp;Pipeline input [(microservice1, 1.2.0), (login, 1.2.0, optional_market/all), (gamification, 1.2.0)]
+de:
+  microservice1:
+    - v1.1.0 -> - v1.2.0
+    gamification:
+      - v1.1.0 -> - v1.2.0
+  login:
+    - v1.1.0 --> - v1.2.0
+  microservice3:
+    - v1.1.0 --> - v1.2.0
+  microservice4:
+    - v1.1.0 --> - v1.2.0
+tr:
+  microservice1:
+    - v1.1.0 -> - v1.2.0
+    gamification:
+      - v1.1.0 -> - v1.2.0
+  login:
+    - v1.1.0 --> - v1.2.0
