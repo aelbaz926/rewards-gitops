@@ -9,4 +9,6 @@ service:
   type: ClusterIP
   port: 80
 
-resources: {}
+# Optional
+nameOverride: ""
+fullnameOverride: ""

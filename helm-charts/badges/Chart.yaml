@@ -1,5 +1,0 @@
-apiVersion: v2
-name: badges
-description: A Helm chart for Kubernetes microservice "badges"
-version: 0.1.0
-appVersion: "1.0"

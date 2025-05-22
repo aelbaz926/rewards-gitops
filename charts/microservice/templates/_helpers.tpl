@@ -1,17 +1,17 @@
 {{/*
 Generate the name of the application
 */}}
-{{- define "badges.name" -}}
+{{- define "name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
-Create a clean fullname without release prefix
+Create a clean fullname
 */}}
-{{- define "badges.fullname" -}}
+{{- define "fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- include "badges.name" . | trunc 63 | trimSuffix "-" }}
+{{- include "name" . | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}

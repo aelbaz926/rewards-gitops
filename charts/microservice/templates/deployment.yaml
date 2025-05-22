@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "points.fullname" . }}
+  name: {{ include "fullname" . }}
   labels:
-    app: {{ include "points.name" . }}
+    app: {{ include "name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "points.name" . }}
+      app: {{ include "name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "points.name" . }}
+        app: {{ include "name" . }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

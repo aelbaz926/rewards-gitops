@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: badges-appset
+  name: de-login-appset
   namespace: argocd
 spec:
   goTemplate: true
@@ -9,8 +9,12 @@ spec:
   generators:
     - list:
         elements:
-          - name: badges
-            environment: prod
+          - name: de-login
+            environment: dev
+          - name: de-login
+            environment: qa
+          - name: de-login
+            environment: staging
   template:
     metadata:
       name: "{{.name}}-{{.environment}}"

@@ -13,6 +13,8 @@ spec:
             environment: dev
           - name: points
             environment: qa
+          - name: points
+            environment: staging
   template:
     metadata:
       name: "{{.name}}-{{.environment}}"
@@ -21,7 +23,7 @@ spec:
       sources:
         - repoURL: https://github.com/aelbaz926/rewards-gitops.git
           targetRevision: HEAD
-          path: helm-charts/{{.name}} 
+          path: helm-charts/common 
           helm:
             valueFiles:
               - $values/environment-files/{{.environment}}/{{.name}}-values.yaml
